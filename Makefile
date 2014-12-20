@@ -1,4 +1,4 @@
-CFLAGS=-Wall -Wextra -Werror -pedantic -O3
+CFLAGS=-Wall -Wextra -Werror -pedantic -O3 -g
 
 SRCFILES=$(wildcard src/*.c)
 OBJFILES=$(addsuffix .o,$(basename $(SRCFILES)))
