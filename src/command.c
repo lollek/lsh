@@ -16,18 +16,21 @@ static int help(void)
     return 0;
   }
 
-static int tryexec(const char *argv)
+int eval(const char *cmd)
   {
-    char **args = splits(argv);
-
+    char **args = splits(cmd);
     if (args == NULL)
       {
         fprintf(stderr, "Error %s L%d: splits(%s) == NULL!\n",
-                __FILE__, __LINE__, argv);
+                __FILE__, __LINE__, cmd);
         return 1;
       }
 
-    if (!access(args[0], F_OK))
+    if (!strcmp(cmd, "help"))
+        return help();
+    else if (!strcmp(cmd, "exit"))
+        return 1;
+    else if (!access(args[0], F_OK))
       {
         if (!access(args[0], X_OK))
           {
@@ -48,14 +51,4 @@ static int tryexec(const char *argv)
     freesplits(args);
 
     return 0;
-  }
-
-int eval(const char *cmd)
-  {
-    if (!strcmp(cmd, "help"))
-        return help();
-    else if (!strcmp(cmd, "exit"))
-        return 1;
-    else
-        return tryexec(cmd);
   }
