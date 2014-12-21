@@ -6,7 +6,8 @@
 
 #include "lineread.h"
 
-char *read_line(const char *prompt)
+char
+*read_line(const char *prompt)
   {
     char buf[BUFSIZ];
     size_t retstrsiz = 1; /* room for null terminator */

@@ -5,7 +5,8 @@
 #include "lineread.h"
 #include "command.h"
 
-int main(int argc, char *argv[])
+int
+main(int argc, char *argv[])
   {
     int status = 0;
     parse_arguments(argc, argv);

@@ -9,11 +9,13 @@
  *
  * When done, you should run freesplits() on the array
  */
-char **splits(const char *cmd);
+char **
+splits(const char *cmd);
 
 /**
  * Frees up the result of splits()
  */
-void freesplits(char **sarray);
+void
+freesplits(char **sarray);
 
 #endif /* LSH_STRING_H */

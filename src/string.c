@@ -52,7 +52,8 @@ splits(const char *cmd)
     return retarray;
   }
 
-void freesplits(char **sarray)
+void
+freesplits(char **sarray)
   {
     int i;
     for (i = 0; sarray[i] != NULL; ++i)

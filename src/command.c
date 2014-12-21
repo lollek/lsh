@@ -8,7 +8,8 @@
 
 #include "command.h"
 
-static int help(void)
+static int
+help(void)
   {
     printf("Available commands:\n"
            "exit\t-\texit lsh\n"
@@ -16,7 +17,8 @@ static int help(void)
     return 0;
   }
 
-int eval(const char *cmd)
+int
+eval(const char *cmd)
   {
     char **args = splits(cmd);
     if (args == NULL)
