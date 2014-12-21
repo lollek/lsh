@@ -3,20 +3,14 @@
 
 #include "argparse.h"
 #include "lineread.h"
+#include "command.h"
 
 int main(int argc, char *argv[])
   {
     parse_arguments(argc, argv);
 
-    while (1)
-      {
-        char *line = read_line("> ");
-        if (line != NULL)
-          {
-            puts(line);
-            free(line);
-          }
-      }
+    while (eval(read_line("> ")) == 0)
+      ;
 
     return 0;
   }
