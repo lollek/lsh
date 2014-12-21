@@ -1,15 +1,13 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-#include "argparse.h"
 #include "lineread.h"
 #include "command.h"
 
 int
-main(int argc, char *argv[])
+main(void)
   {
     int status = 0;
-    parse_arguments(argc, argv);
 
     while (status == 0)
       {
