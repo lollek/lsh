@@ -73,10 +73,7 @@ eval(const char *cmd)
     char **args;
 
     if (cmd[0] == '\0')
-      {
-        printf("\n");
         return 0;
-      }
 
     args = splits(cmd, ' ');
     if (args == NULL)

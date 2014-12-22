@@ -1,5 +1,6 @@
 #include <signal.h>
 #include <stdio.h>
+#include <unistd.h>
 
 #include "signal.h"
 
@@ -7,7 +8,7 @@ void
 send_newline(int signal)
   {
     (void)signal;
-    putc('\n', stdin);
+    write(STDIN_FILENO, "\n", 1);
   }
 
 int
