@@ -4,6 +4,9 @@
 #include <unistd.h>
 #include <sys/wait.h>
 #include <sys/types.h>
+#include <sys/stat.h>
+#include <stdbool.h>
+#include <errno.h>
 
 #include "string.h"
 #include "path.h"
@@ -32,6 +35,22 @@ builtin(status_t *status, char *arg0)
         *status = EXIT_OK;
     else
         *status = NONE;
+  }
+
+static bool
+execable(char *path)
+  {
+    struct stat info;
+    if (access(path, F_OK)
+        || access(path, X_OK)
+        || lstat(path, &info) != 0)
+        return false;
+    if (S_ISDIR(info.st_mode))
+      {
+        errno = EISDIR;
+        return false;
+      }
+    return true;
   }
 
 static int
@@ -66,7 +85,7 @@ eval(const char *cmd)
     /* Relative path */
     if (status == NONE && strchr(args[0], '/'))
       {
-        if (!access(args[0], F_OK) && !access(args[0], X_OK))
+        if (execable(args[0]))
             forkexec(args[0], args);
         else
             perror(args[0]);
@@ -96,7 +115,7 @@ eval(const char *cmd)
             strcpy(tmparg0 + pathlen + 1, args[0]);
             args[0] = tmparg0;
 
-            if (!access(args[0], F_OK && !access(args[0], X_OK)))
+            if (execable(args[0]))
               {
                 forkexec(args[0], args);
                 status = OK;
