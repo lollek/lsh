@@ -4,30 +4,33 @@
 #include "string.h"
 
 char **
-splits(const char *cmd)
+splits(const char *cmd, int delim)
   {
     char **retarray;
     int i;
     const char *cptr = cmd;
     int nsplits = 0;
 
+    /* Count nsplits */
     for (;;)
       {
         ++nsplits;
-        cptr = strchr(cptr, ' ');
+        cptr = strchr(cptr, delim);
         if (cptr == NULL)
             break;
         cptr++;
       }
 
+    /* Allocate retarray */
     retarray = malloc(sizeof *retarray * (nsplits + 1));
     if (retarray == NULL)
         return NULL;
 
+    /* Populate retarray[0 -> nsplits -1] */
     cptr = cmd;
     for (i = 0; i < nsplits; ++i)
       {
-        char *newcptr = strchr(cptr, ' ');
+        char *newcptr = strchr(cptr, delim);
         size_t ptrdiff;
         if (newcptr == NULL)
             ptrdiff = strlen(cptr);

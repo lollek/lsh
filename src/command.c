@@ -20,7 +20,7 @@ help(void)
 int
 eval(const char *cmd)
   {
-    char **args = splits(cmd);
+    char **args = splits(cmd, ' ');
     if (args == NULL)
       {
         fprintf(stderr, "Error %s L%d: splits(%s) == NULL!\n",
