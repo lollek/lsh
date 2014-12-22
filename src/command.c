@@ -1,26 +1,57 @@
 #include <string.h>
+#include <stdlib.h>
 #include <stdio.h>
 #include <unistd.h>
 #include <sys/wait.h>
 #include <sys/types.h>
 
 #include "string.h"
+#include "path.h"
 
 #include "command.h"
 
-static int
-help(void)
+typedef enum status_t
   {
-    printf("Available commands:\n"
-           "exit\t-\texit lsh\n"
-          );
+    NONE,
+    OK,
+    EXIT_FAIL,
+    EXIT_OK
+  }
+status_t;
+
+static void
+builtin(status_t *status, char *arg0)
+  {
+    *status = OK;
+    if (!strcmp(arg0, "help"))
+        printf("Available commands:\n"
+               "exit\t-\texit lsh\n"
+               "help\t-\tdisplay this help\n"
+              );
+    else if (!strcmp(arg0, "exit"))
+        *status = EXIT_OK;
+    else
+        *status = NONE;
+  }
+
+static int
+forkexec(char *arg0, char **argv)
+  {
+    pid_t pid;
+    switch(pid = fork())
+      {
+        case -1: perror("fork"); break;
+        case 0: execv(arg0, argv); break;
+        default: waitpid(pid, NULL, 0); break;
+      }
     return 0;
   }
 
 int
 eval(const char *cmd)
   {
-    int status = 0;
+    status_t status = NONE;
+
     char **args = splits(cmd, ' ');
     if (args == NULL)
       {
@@ -29,29 +60,64 @@ eval(const char *cmd)
         return 1;
       }
 
-    if (!strcmp(cmd, "help"))
-        return help();
-    else if (!strcmp(cmd, "exit"))
-        status = 2;
-    else if (!access(args[0], F_OK))
+    /* Builtins */
+    builtin(&status, args[0]);
+
+    /* Relative path */
+    if (status == NONE && strchr(args[0], '/'))
       {
-        if (!access(args[0], X_OK))
-          {
-            pid_t pid;
-            switch(pid = fork())
-              {
-                case -1: perror("fork"); break;
-                case 0: execv(args[0], args); break;
-                default: waitpid(pid, NULL, 0); break;
-              }
-          }
+        if (!access(args[0], F_OK) && !access(args[0], X_OK))
+            forkexec(args[0], args);
         else
             perror(args[0]);
+
+        status = OK;
       }
-    else
+
+    /* Inside a path in paths */
+    if (status == NONE)
+      {
+        char **paths = splits(get_path(), ':');
+        size_t arg0len = strlen(args[0]);
+        size_t i;
+
+        for (i = 0; paths[i] != NULL; ++i)
+          {
+            size_t pathlen = strlen(paths[i]);
+            char *oldarg0 = args[0];
+            char *tmparg0 = malloc(arg0len + 1 + pathlen + 1);
+            if (tmparg0 == NULL)
+              {
+                perror("malloc");
+                continue;
+              }
+            strcpy(tmparg0, paths[i]);
+            strcpy(tmparg0 + pathlen, "/");
+            strcpy(tmparg0 + pathlen + 1, args[0]);
+            args[0] = tmparg0;
+
+            if (!access(args[0], F_OK && !access(args[0], X_OK)))
+              {
+                forkexec(args[0], args);
+                status = OK;
+              }
+
+            args[0] = oldarg0;
+            free(tmparg0);
+          }
+
+        freesplits(paths);
+      }
+
+    if (status == NONE)
         printf("Unknown command '%s'\n", args[0]);
 
     freesplits(args);
 
-    return status;
+    switch (status)
+      {
+        case EXIT_FAIL: return 1;
+        case EXIT_OK: return 2;
+        default: return 0;
+      }
   }

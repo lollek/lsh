@@ -15,6 +15,12 @@ int
 init_path(void);
 
 /**
+ * Get a pointer to the path string
+ */
+char *
+get_path(void);
+
+/**
  * Free path
  */
 void

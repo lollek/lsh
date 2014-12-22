@@ -22,6 +22,12 @@ init_path(void)
     return 0;
   }
 
+char *
+get_path(void)
+  {
+    return g_path;
+  }
+
 void
 exit_path(void)
   {
