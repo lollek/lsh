@@ -46,7 +46,7 @@ eval(const char *cmd)
               }
           }
         else
-            perror("access");
+            perror(args[0]);
       }
     else
         printf("Unknown command '%s'\n", args[0]);
