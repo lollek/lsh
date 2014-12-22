@@ -20,6 +20,7 @@ help(void)
 int
 eval(const char *cmd)
   {
+    int status = 0;
     char **args = splits(cmd, ' ');
     if (args == NULL)
       {
@@ -31,7 +32,7 @@ eval(const char *cmd)
     if (!strcmp(cmd, "help"))
         return help();
     else if (!strcmp(cmd, "exit"))
-        return 1;
+        status = 1;
     else if (!access(args[0], F_OK))
       {
         if (!access(args[0], X_OK))
@@ -52,5 +53,5 @@ eval(const char *cmd)
 
     freesplits(args);
 
-    return 0;
+    return status;
   }
