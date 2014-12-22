@@ -12,6 +12,7 @@
 #include "path.h"
 
 #include "command.h"
+#include "command_help.h"
 
 typedef enum status_t
   {
@@ -22,15 +23,16 @@ typedef enum status_t
   }
 status_t;
 
+/**
+ * Builtins
+ * exit / logout - exit lsh
+ */
 static void
-builtin(status_t *status, char *arg0)
+builtin(status_t *status, char *arg0, char **argv)
   {
     *status = OK;
     if (!strcmp(arg0, "help"))
-        printf("Available commands:\n"
-               "exit\t-\texit lsh\n"
-               "help\t-\tdisplay this help\n"
-              );
+        help(argv[1]);
     else if (!strcmp(arg0, "exit"))
         *status = EXIT_OK;
     else
@@ -84,7 +86,7 @@ eval(const char *cmd)
       }
 
     /* Builtins */
-    builtin(&status, args[0]);
+    builtin(&status, args[0], args);
 
     /* Relative path */
     if (status == NONE && strchr(args[0], '/'))
