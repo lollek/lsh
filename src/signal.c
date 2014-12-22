@@ -7,12 +7,13 @@
 void
 send_newline(int signal, siginfo_t *info, void *unused)
   {
+    const pid_t this_process = 0;
     (void)signal;
     (void)unused;
-    if (info->si_pid == 0) /* Send by this program */
+    if (info->si_pid == this_process)
       write(STDIN_FILENO, "\n", 1);
     else
-      exit(0);
+      exit(1);
   }
 
 int
