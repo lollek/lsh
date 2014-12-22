@@ -1,9 +1,9 @@
-#include <stdio.h>
 #include <stdlib.h>
 
 #include "lineread.h"
 #include "command.h"
 #include "path.h"
+#include "signal.h"
 
 int
 main(void)
@@ -11,8 +11,9 @@ main(void)
     int status = 0;
 
     /* Init */
-    if (init_path() != 0)
-        exit(1);
+    if (init_signals() != 0
+        || init_path() != 0)
+        return 1;
 
     /* Loop */
     while (status == 0)

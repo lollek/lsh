@@ -70,8 +70,15 @@ int
 eval(const char *cmd)
   {
     status_t status = NONE;
+    char **args;
 
-    char **args = splits(cmd, ' ');
+    if (cmd[0] == '\0')
+      {
+        printf("\n");
+        return 0;
+      }
+
+    args = splits(cmd, ' ');
     if (args == NULL)
       {
         fprintf(stderr, "Error %s L%d: splits(%s) == NULL!\n",
