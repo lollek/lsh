@@ -1,7 +1,7 @@
-CFLAGS=-Wall -Wextra -Werror -pedantic -std=c89 -O3 -g
+CFLAGS=-Wall -Wextra -Werror -pedantic -O3 -g
 
 LINT=cppcheck
-LINTFLAGS=--std=c89 --enable=all
+LINTFLAGS=--enable=all
 
 HEADERS=$(wildcard src/*.h)
 SRCFILES=$(wildcard src/*.c)
