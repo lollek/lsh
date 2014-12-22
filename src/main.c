@@ -25,5 +25,9 @@ main(void)
     /* Exit */
     exit_path();
 
-    return status;
+    switch (status)
+      {
+        case 2: return 0;
+        default: return status;
+      }
   }

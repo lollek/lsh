@@ -32,7 +32,7 @@ eval(const char *cmd)
     if (!strcmp(cmd, "help"))
         return help();
     else if (!strcmp(cmd, "exit"))
-        status = 1;
+        status = 2;
     else if (!access(args[0], F_OK))
       {
         if (!access(args[0], X_OK))
