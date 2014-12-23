@@ -7,6 +7,10 @@
 
 #include "cd.h"
 
+#define fail(string) \
+    return (!!fprintf(stderr, "cd: %s: %s\n", argv[i], string))
+
+
 int
 command_cd(char * const *argv)
   {
@@ -16,30 +20,16 @@ command_cd(char * const *argv)
     for (i = 1; argv[i] != NULL; ++i)
     {
       if (argv[i][0] == '-')
-        {
-          fprintf(stderr, "cd: %s: Invalid option\n", argv[i]);
-          return 1;
-        }
-
+          fail("Invalid option");
       if (chdir(argv[i]))
-        {
-          fprintf(stderr, "cd: %s: %s\n", argv[1], strerror(errno));
-          return 1;
-        }
+          fail(strerror(errno));
       else
           return 0;
-
     }
 
     if ((pw = getpwuid(getuid())) == NULL)
-      {
-        fprintf(stderr, "cd: %s\n", strerror(ENOENT));
-        return 1;
-      }
+        fail(strerror(ENOENT));
     if (chdir(pw->pw_dir))
-      {
-        fprintf(stderr, "cd: %s: %s\n", argv[1], strerror(errno));
-        return 1;
-      }
+        fail(strerror(errno));
     return 0;
   }
