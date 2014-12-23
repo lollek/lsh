@@ -1,6 +1,7 @@
 #include <stdlib.h>
+#include <readline/readline.h>
+#include <readline/history.h>
 
-#include "lineread.h"
 #include "command.h"
 #include "path.h"
 #include "signal.h"
@@ -18,7 +19,7 @@ main(void)
     /* Loop */
     while (status == 0)
       {
-        char *line = read_line("> ");
+        char *line = readline("> ");
         if (line == NULL)
             continue;
         status = eval(line);

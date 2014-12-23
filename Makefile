@@ -1,4 +1,5 @@
 CFLAGS=-Wall -Wextra -Werror -pedantic -O3 -g
+LDFLAGS=-lreadline
 
 LINT=cppcheck
 LINTFLAGS=--enable=all
@@ -8,7 +9,7 @@ SRCFILES=$(wildcard src/*.c)
 OBJFILES=$(addsuffix .o,$(basename $(SRCFILES)))
 
 lsh:	$(OBJFILES)
-	$(CC) -o $@ $^
+	$(CC) $(LDFLAGS) -o $@ $^
 
 lint:
 	$(LINT) $(LINTFLAGS) $(SRCFILES) $(HEADERS)
