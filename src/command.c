@@ -74,8 +74,8 @@ eval(const char *cmd)
     status_t status = NONE;
     char **args;
 
-    if (cmd[0] == '\0')
-        return 0;
+    if (cmd == NULL)
+        return 2;
 
     args = splits(cmd, ' ');
     if (args == NULL)

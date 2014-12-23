@@ -20,8 +20,6 @@ main(void)
     while (status == 0)
       {
         char *line = readline("> ");
-        if (line == NULL)
-            continue;
         status = eval(line);
         free(line);
       }
