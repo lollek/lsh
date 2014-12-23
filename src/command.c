@@ -23,10 +23,6 @@ typedef enum status_t
   }
 status_t;
 
-/**
- * Builtins
- * exit / logout - exit lsh
- */
 static void
 builtin(status_t *status, char *arg0, char **argv)
   {
@@ -82,8 +78,7 @@ eval(const char *cmd)
     args = splits(cmd, ' ');
     if (args == NULL)
       {
-        fprintf(stderr, "Error %s L%d: splits(%s) == NULL!\n",
-                __FILE__, __LINE__, cmd);
+        fprintf(stderr, "Virtual memory exhausted\n");
         return 1;
       }
 
