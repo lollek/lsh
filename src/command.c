@@ -12,8 +12,8 @@
 #include "path.h"
 
 #include "command.h"
-#include "command_help.h"
-#include "command_cd.h"
+#include "command/help.h"
+#include "command/cd.h"
 
 typedef enum status_t
   {

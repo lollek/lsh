@@ -5,7 +5,7 @@
 #include <string.h>
 #include <stdio.h>
 
-#include "command_cd.h"
+#include "cd.h"
 
 int
 command_cd(char * const *argv)

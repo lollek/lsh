@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <string.h>
 
-#include "command_help.h"
+#include "help.h"
 
 void
 help(const char *cmd)
