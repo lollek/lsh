@@ -13,6 +13,7 @@
 
 #include "command.h"
 #include "command_help.h"
+#include "command_cd.h"
 
 typedef enum status_t
   {
@@ -27,7 +28,9 @@ static void
 builtin(status_t *status, char *arg0, char **argv)
   {
     *status = OK;
-    if (!strcmp(arg0, "help"))
+    if (!strcmp(arg0, "cd"))
+        command_cd(argv);
+    else if (!strcmp(arg0, "help"))
         help(argv[1]);
     else if (!strcmp(arg0, "exit"))
         *status = EXIT_OK;

@@ -3,20 +3,18 @@
 
 #include "command_help.h"
 
-static void
-all_help(void)
-  {
-    printf("Builtin commands:\n"
-           "\texit"
-           "\thelp"
-           "\n");
-  }
-
 void
 help(const char *cmd)
   {
     if (cmd == NULL)
-        all_help();
+        printf("Builtin commands:\n"
+               "\tcd [path]"
+               "\texit"
+               "\thelp"
+               "\n");
+    else if (!strcmp(cmd, "cd"))
+        printf("cd [path]\n"
+               "Change directory to path. If no path is given, directory is changed to user's home directory\n");
     else if (!strcmp(cmd, "exit"))
         puts("Exit lsh");
     else
