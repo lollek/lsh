@@ -2,12 +2,16 @@
 #define LSH_COMMAND_H
 
 /**
- * Evaluate cmd as a command
- * @param cmd String to evaluate
- * @return
- *  0 - success
- *  1 - error
- *  2 - user wants to exit
+ * eval - Evaluate a string
+ * @cmd		String to evaluate
+ *
+ * Returns:
+ *  0		Success
+ *  1		Error
+ *  2		User wants to exit
+ *
+ * Description:
+ * Evaluate (and execute) a command and return
  */
 int
 eval(const char *cmd);

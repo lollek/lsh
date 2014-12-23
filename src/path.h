@@ -6,22 +6,27 @@
 #endif /* DEFAULT_PATH */
 
 /**
+ * init_path - initialize the global path variable
+ *
+ * Returns:
+ *  0		On success
+ *
+ * Description:
  * Init path to a default value, which is the DEFAULT_PATH above.
  * Path is used like $PATH in bash, i.e. contains folders in which
  * to look for files to execute.
- * @return 0 on success
  */
 int
 init_path(void);
 
 /**
- * Get a pointer to the path string
+ * get_path - return a pointer to the global path variable
  */
 char *
 get_path(void);
 
 /**
- * Free path
+ * exit_path - Free global path variable
  */
 void
 exit_path(void);

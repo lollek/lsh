@@ -3,7 +3,11 @@
 
 /**
  * read_line - Read a line from stdin
- * @prompt:	prompt to print before reading a line
+ * @prompt	Prompt to print before reading a line
+ *
+ * Returns:
+ *  string	On success
+ *  NULL	On error or no input
  *
  * Description:
  * Reads and returns a line from the user, which should be freed after use.
