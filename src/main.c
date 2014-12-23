@@ -19,6 +19,8 @@ main(void)
     while (status == 0)
       {
         char *line = read_line("> ");
+        if (line == NULL)
+            continue;
         status = eval(line);
         free(line);
       }

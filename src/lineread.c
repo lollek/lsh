@@ -15,6 +15,7 @@ char
 
     printf("%s", prompt);
 
+    /* Add buf to retstr */
     while (fgets(buf, BUFSIZ, stdin) != NULL)
       {
         char *newretstr;
@@ -24,6 +25,7 @@ char
         newretstr = realloc(retstr, retstrsiz);
         if (newretstr == NULL)
           {
+            perror("read_line");
             free(retstr);
             return NULL;
           }
@@ -35,13 +37,6 @@ char
             retstr[retstrsiz -2] = '\0';
             return retstr;
           }
-      }
-
-    if (retstr == NULL)
-      {
-        retstr = malloc(1);
-        if (retstr != NULL)
-            retstr[0] = '\0';
       }
 
     return retstr;

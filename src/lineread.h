@@ -2,8 +2,12 @@
 #define LSH_LINEREAD_H
 
 /**
- * Read a line from the user.
- * NB: Line should be freed after use
+ * read_line - Read a line from stdin
+ * @prompt:	prompt to print before reading a line
+ *
+ * Description:
+ * Reads and returns a line from the user, which should be freed after use.
+ * Return value is NULL on errors or no input
  */
 char *
 read_line(const char *prompt);
