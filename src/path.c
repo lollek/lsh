@@ -14,7 +14,7 @@ init_path(void)
     g_path = malloc(pathlen + 1);
     if (g_path == NULL)
       {
-        perror("malloc");
+        fprintf(stderr, "Virtual memory exhausted\n");
         return 1;
       }
 
