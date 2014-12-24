@@ -12,7 +12,7 @@
  *
  * Description:
  * Split a string into an array of words, which is NULL-terminated.
- * E.g splits("Hello world", ' ') returns sarray where
+ * E.g splits("  Hello world  ", ' ') returns sarray where
  * sarray[0] = "Hello"
  * sarray[1] = "World"
  * sarray[2] = NULL

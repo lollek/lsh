@@ -8,17 +8,26 @@ splits(const char *cmd, int delim)
   {
     char **retarray;
     int i;
-    const char *cptr = cmd;
+    const char *cptr;
     int nsplits = 0;
 
+    if (cmd == NULL)
+        return NULL;
+
+    /* lstrip() */
+    while (*cmd == delim)
+        cmd++;
+
     /* Count nsplits */
-    for (;;)
+    cptr = cmd;
+    while (*cptr != '\0')
       {
         ++nsplits;
         cptr = strchr(cptr, delim);
         if (cptr == NULL)
             break;
-        cptr++;
+        while (*cptr == delim)
+            cptr++;
       }
 
     /* Allocate retarray */
@@ -48,7 +57,13 @@ splits(const char *cmd, int delim)
 
         strncpy(retarray[i], cptr, ptrdiff);
         retarray[i][ptrdiff] = '\0';
-        cptr = newcptr + 1;
+        cptr = newcptr;
+        if (cptr == NULL)
+            break;
+        while (*cptr == delim)
+            cptr++;
+        if (cptr == NULL)
+            break;
       }
     retarray[nsplits] = NULL;
 
