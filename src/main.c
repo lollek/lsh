@@ -2,9 +2,10 @@
 #include <readline/readline.h>
 #include <readline/history.h>
 
-#include "command.h"
-#include "path.h"
+
 #include "signal.h"
+#include "command.h"
+#include "command/path.h"
 
 int
 main(void)
@@ -12,9 +13,10 @@ main(void)
     int status = 0;
 
     /* Init */
-    if (init_signals() != 0
-        || init_path() != 0)
-        return 1;
+    init_signals();
+
+    /* Load config */
+    command_path_init(NULL);
 
     /* Loop */
     while (status == 0)
@@ -25,7 +27,7 @@ main(void)
       }
 
     /* Exit */
-    exit_path();
+    command_path_exit();
 
     switch (status)
       {
