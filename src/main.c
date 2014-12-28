@@ -2,7 +2,6 @@
 #include <readline/readline.h>
 #include <readline/history.h>
 
-
 #include "signal.h"
 #include "command.h"
 #include "command/path.h"
@@ -21,7 +20,7 @@ main(void)
     /* Loop */
     while (status == 0)
       {
-        char *line = readline("> ");
+        char *line = readline(". ");
         status = eval(line);
         free(line);
       }
