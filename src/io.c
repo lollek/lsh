@@ -16,7 +16,7 @@ outfile_set(const char *path, int *stored_fd, FILE *file, void (*resetfun)(void)
         || (*stored_fd = dup(fileno(file))) == -1
         || freopen(path, "w", file) == NULL)
       {
-        perror("outfile_set");
+        perror(path);
         (*resetfun)();
         return 1;
       }
