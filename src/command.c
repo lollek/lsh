@@ -36,6 +36,12 @@ redirect_fds(char ***argsptr)
         ++(*argsptr);
         return redirect_fds(argsptr);
       }
+    if (cmd[0] == '#')
+      {
+        stderr_set(cmd + 1);
+        ++(*argsptr);
+        return redirect_fds(argsptr);
+      }
 
     return ACTIONS_PENDING;
   }
@@ -44,6 +50,7 @@ static void
 restore_fds(void)
   {
     stdout_reset();
+    stderr_reset();
   }
 
 static status_t

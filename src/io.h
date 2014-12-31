@@ -2,7 +2,7 @@
 #define LSH_IO_H
 
 /**
- * stdout_set - Point stdout to a file
+ * stdout/err_set - Point stdout/stderr to a file
  * @file	File to redirect stdout to
  *
  * Returns:
@@ -11,11 +11,13 @@
  *
  */
 int stdout_set(const char *file);
+int stderr_set(const char *file);
 
 /**
- * stdout_reset - Restore stdout to terminal
+ * stdout/err_reset - Restore stdout/stderr to terminal
  */
 void stdout_reset(void);
+void stderr_reset(void);
 
 #endif /* LSH_IO_H */
 
