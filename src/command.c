@@ -121,10 +121,5 @@ eval(const char *cmd)
     restore_fds();
     freesplits(orig_args);
 
-    switch (status)
-      {
-        case ERROR: return 1;
-        case ACTION_EXIT: return 2;
-        default: return 0;
-      }
+    return status == ACTION_EXIT ? 2 : 0;
   }
