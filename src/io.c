@@ -9,12 +9,19 @@ static int stderr_old = -1;
 static int
 outfile_set(const char *path, int *stored_fd, FILE *file, void (*resetfun)(void))
   {
+    int fd = fileno(file);
+
     if (*stored_fd != -1)
         (*resetfun)();
 
-    if (fflush(file) != 0
-        || (*stored_fd = dup(fileno(file))) == -1
-        || freopen(path, "w", file) == NULL)
+    fflush(file);
+    if ((*stored_fd = dup(fd)) == -1)
+      {
+        perror(path);
+        return 1;
+      }
+
+    if (freopen(path, "w", file) == NULL)
       {
         perror(path);
         (*resetfun)();
@@ -24,17 +31,23 @@ outfile_set(const char *path, int *stored_fd, FILE *file, void (*resetfun)(void)
   }
 
 static void
-outfile_reset(int *stored_fd, FILE *file, int fd)
+outfile_reset(int *stored_fd, int fd)
   {
+    FILE *file;
+
     if (*stored_fd == -1)
         return;
-    if (fflush(file) != 0)
-        perror("outfile_reset (fflush)");
+
+    if ((file = fdopen(fd, "w")) != NULL)
+        fflush(file);
+
     if (dup2(*stored_fd, fd) == -1)
         perror("outfile_reset (dup2)");
     if (close(*stored_fd) != 0)
         perror("outfile_reset (close)");
-    clearerr(file);
+
+    if ((file = fdopen(fd, "w")) != NULL)
+        clearerr(file);
     *stored_fd = -1;
   }
 
@@ -53,10 +66,10 @@ stderr_set(const char *file)
 void
 stdout_reset(void)
   {
-    outfile_reset(&stdout_old, stdout, STDOUT_FILENO);
+    outfile_reset(&stdout_old, STDOUT_FILENO);
   }
 void
 stderr_reset(void)
   {
-    outfile_reset(&stderr_old, stderr, STDERR_FILENO);
+    outfile_reset(&stderr_old, STDERR_FILENO);
   }
