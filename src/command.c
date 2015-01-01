@@ -32,13 +32,15 @@ redirect_fds(char ***argsptr)
 
     if (cmd[0] == '@')
       {
-        stdout_set(cmd + 1);
+        if (stdout_set(cmd + 1) != 0)
+            return ERROR;
         ++(*argsptr);
         return redirect_fds(argsptr);
       }
     if (cmd[0] == '#')
       {
-        stderr_set(cmd + 1);
+        if (stderr_set(cmd + 1) != 0)
+            return ERROR;
         ++(*argsptr);
         return redirect_fds(argsptr);
       }
