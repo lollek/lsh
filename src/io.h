@@ -5,7 +5,9 @@
  *  stdin_set - Redirect a stream
  * stdout_set
  * stderr_set
- * @file	File to redirect stdout to
+ * @file	File to redirect stdout to.
+ * 		If file is @, stdout is used
+ * 		If file is #, stderr is used
  *
  * Returns:
  * 0		Success

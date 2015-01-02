@@ -1,9 +1,12 @@
 #include <stdio.h>
+#include <string.h>
 #include <unistd.h>
 #include <fcntl.h>
 #include <sys/stat.h>
 
 #include "io.h"
+
+#define fail(msg) { perror(msg); return 1; }
 
 static int  stdin_backup = -1;
 static int stdout_backup = -1;
@@ -12,17 +15,33 @@ static int stderr_backup = -1;
 static int
 outfile_set(const char *file, int *fd_backup, int fd_to_change)
   {
-    const int oflag = O_WRONLY | O_CREAT | O_TRUNC;
-    const mode_t omode = S_IRUSR | S_IWUSR | S_IRGRP | S_IROTH;
     int newfd;
 
-    if ((*fd_backup = dup(fd_to_change)) == -1
-        || (newfd = open(file, oflag, omode)) == -1
-        || dup2(newfd, fd_to_change) == -1
-        || close(newfd) == -1)
+    if ((*fd_backup = dup(fd_to_change)) == -1)
+        fail(file);
+
+    if (!strcmp(file, "@"))
+        newfd = STDOUT_FILENO;
+    else if (!strcmp(file, "#"))
+        newfd = STDERR_FILENO;
+    else
       {
-        perror(file);
-        return 1;
+        const int oflag = O_WRONLY | O_CREAT | O_TRUNC;
+        const mode_t omode = S_IRUSR | S_IWUSR | S_IRGRP | S_IROTH;
+        if ((newfd = open(file, oflag, omode)) == -1)
+          fail(file);
+      }
+
+    if (dup2(newfd, fd_to_change) == -1)
+        fail(file);
+    switch (newfd)
+      {
+        case STDOUT_FILENO: break;
+        case STDERR_FILENO: break;
+        default:
+            if (close(newfd) == -1)
+              fail(file);
+            break;
       }
     return 0;
   }

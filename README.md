@@ -4,13 +4,20 @@ A basic linux shell
 ## Functionality
 
 ### Redirect streams
-`$infile` works like `<infile` in bash (redirect stdin)  
-`@outfile` works like `>outfile` in bash (redirect stdout)  
-`#errfile` works like `2>outfile` in bash (redirect stderr)
+`$infile` works like `<infile` in Bourne shell (redirect stdin)  
+`@outfile` works like `>outfile` in Bourne shell (redirect stdout)  
+`@#` works like `>&2` in Bourne shell (redirect stdout to stderr)  
+`#errfile` works like `2>outfile` in Bourne shell (redirect stderr)  
+`#@` works like `2>&1` in Bourne shell (redirect stderr to stdout)  
 ```
 . @outfile echo Hello world!
 . cat outfile 
 Hello world!
+```
+
+If you redirect two streams in one command you will need to put a space between them.
+```
+@/dev/null #@ command-without-stdout-and-stderr
 ```
 
 ### Path
