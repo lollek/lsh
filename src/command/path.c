@@ -128,12 +128,18 @@ command_path_find(const char *path)
 int
 command_path(char **argv)
   {
-    char *path;
+    int i;
+
     if (argv[1] == NULL)
         return command_path_show();
-    if ((path = command_path_find(argv[1])) != NULL)
+
+    for (i = 1; argv[i] != NULL; ++i)
       {
-        printf("%s: %s\n", argv[1], path);
+        char *path = command_path_find(argv[i]);
+        if (path == NULL)
+            continue;
+
+        printf("%s: %s\n", argv[i], path);
         free(path);
       }
     return 0;
