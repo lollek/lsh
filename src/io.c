@@ -1,30 +1,26 @@
 #include <stdio.h>
 #include <unistd.h>
+#include <fcntl.h>
+#include <sys/stat.h>
 
 #include "io.h"
 
-static int stdout_old = -1;
-static int stderr_old = -1;
+static int stdout_backup = -1;
+static int stderr_backup = -1;
 
 static int
-outfile_set(const char *path, int *stored_fd, FILE *file, void (*resetfun)(void))
+outfile_set(const char *file, int *fd_backup, int fd_to_change)
   {
-    int fd = fileno(file);
+    const int oflag = O_WRONLY | O_CREAT | O_TRUNC;
+    const mode_t omode = S_IRUSR | S_IWUSR | S_IRGRP | S_IROTH;
+    int newfd;
 
-    if (*stored_fd != -1)
-        (*resetfun)();
-
-    fflush(file);
-    if ((*stored_fd = dup(fd)) == -1)
+    if ((*fd_backup = dup(fd_to_change)) == -1
+        || (newfd = open(file, oflag, omode)) == -1
+        || dup2(newfd, fd_to_change) == -1
+        || close(newfd))
       {
-        perror(path);
-        return 1;
-      }
-
-    if (freopen(path, "w", file) == NULL)
-      {
-        perror(path);
-        (*resetfun)();
+        perror(file);
         return 1;
       }
     return 0;
@@ -48,28 +44,33 @@ outfile_reset(int *stored_fd, int fd)
 
     if ((file = fdopen(fd, "w")) != NULL)
         clearerr(file);
+
     *stored_fd = -1;
   }
 
 int
 stdout_set(const char *file)
   {
-    return outfile_set(file, &stdout_old, stdout, stdout_reset);
+    if (stdout_backup != -1)
+        stdout_reset();
+    return outfile_set(file, &stdout_backup, STDOUT_FILENO);
   }
 
 int
 stderr_set(const char *file)
   {
-    return outfile_set(file, &stderr_old, stderr, stderr_reset);
+    if (stderr_backup != -1)
+        stderr_reset();
+    return outfile_set(file, &stderr_backup, STDERR_FILENO);
   }
 
 void
 stdout_reset(void)
   {
-    outfile_reset(&stdout_old, STDOUT_FILENO);
+    outfile_reset(&stdout_backup, STDOUT_FILENO);
   }
 void
 stderr_reset(void)
   {
-    outfile_reset(&stderr_old, STDERR_FILENO);
+    outfile_reset(&stderr_backup, STDERR_FILENO);
   }
