@@ -5,6 +5,7 @@
 
 #include "io.h"
 
+static int  stdin_backup = -1;
 static int stdout_backup = -1;
 static int stderr_backup = -1;
 
@@ -18,7 +19,7 @@ outfile_set(const char *file, int *fd_backup, int fd_to_change)
     if ((*fd_backup = dup(fd_to_change)) == -1
         || (newfd = open(file, oflag, omode)) == -1
         || dup2(newfd, fd_to_change) == -1
-        || close(newfd))
+        || close(newfd) == -1)
       {
         perror(file);
         return 1;
@@ -49,6 +50,25 @@ outfile_reset(int *stored_fd, int fd)
   }
 
 int
+stdin_set(const char *file)
+  {
+    int newfd;
+
+    if (stdin_backup != -1)
+        stdin_reset();
+
+    if ((stdin_backup = dup(STDIN_FILENO)) == -1
+        || (newfd = open(file, O_RDONLY)) == -1
+        || dup2(newfd, STDIN_FILENO) == -1
+        || close(newfd) == -1)
+      {
+        perror(file);
+        return 1;
+      }
+    return 0;
+  }
+
+int
 stdout_set(const char *file)
   {
     if (stdout_backup != -1)
@@ -62,6 +82,18 @@ stderr_set(const char *file)
     if (stderr_backup != -1)
         stderr_reset();
     return outfile_set(file, &stderr_backup, STDERR_FILENO);
+  }
+
+void
+stdin_reset(void)
+  {
+    if (stdin_backup == -1)
+        return;
+    if (dup2(stdin_backup, STDIN_FILENO) == -1)
+        perror("outfile_reset (dup2)");
+    if (close(stdin_backup) != 0)
+        perror("outfile_reset (close)");
+    stdin_backup = -1;
   }
 
 void

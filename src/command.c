@@ -32,6 +32,7 @@ redirect_fds(char ***argsptr)
 
     switch(cmd[0])
       {
+        case '$': if  (stdin_set(cmd + 1) != 0) return ERROR; break;
         case '@': if (stdout_set(cmd + 1) != 0) return ERROR; break;
         case '#': if (stderr_set(cmd + 1) != 0) return ERROR; break;
         default: return ACTIONS_PENDING;
@@ -44,6 +45,7 @@ redirect_fds(char ***argsptr)
 static void
 restore_fds(void)
   {
+    stdin_reset();
     stdout_reset();
     stderr_reset();
   }

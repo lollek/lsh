@@ -2,7 +2,9 @@
 #define LSH_IO_H
 
 /**
- * stdout/err_set - Point stdout/stderr to a file
+ *  stdin_set - Redirect a stream
+ * stdout_set
+ * stderr_set
  * @file	File to redirect stdout to
  *
  * Returns:
@@ -10,12 +12,16 @@
  * 1		Error
  *
  */
+int  stdin_set(const char *file);
 int stdout_set(const char *file);
 int stderr_set(const char *file);
 
 /**
- * stdout/err_reset - Restore stdout/stderr to terminal
+ *  stdin_reset - Restore stream to terminal
+ * stdout_reset
+ * stderr_reset
  */
+void  stdin_reset(void);
 void stdout_reset(void);
 void stderr_reset(void);
 
