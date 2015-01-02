@@ -20,12 +20,6 @@ int
 command_path_init(const char *path);
 
 /**
- * command_path_get - return a pointer to the global path variable
- */
-char *
-command_path_get(void);
-
-/**
  * command_path_exit - Free global path variable
  */
 void

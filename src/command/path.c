@@ -60,12 +60,6 @@ command_path_init(const char *given_path)
     return 0;
   }
 
-char *
-command_path_get(void)
-  {
-    return g_path;
-  }
-
 void
 command_path_exit(void)
   {
