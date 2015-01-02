@@ -30,22 +30,15 @@ redirect_fds(char ***argsptr)
     if (cmd == NULL)
         return NO_MORE_ACTIONS;
 
-    if (cmd[0] == '@')
+    switch(cmd[0])
       {
-        if (stdout_set(cmd + 1) != 0)
-            return ERROR;
-        ++(*argsptr);
-        return redirect_fds(argsptr);
-      }
-    if (cmd[0] == '#')
-      {
-        if (stderr_set(cmd + 1) != 0)
-            return ERROR;
-        ++(*argsptr);
-        return redirect_fds(argsptr);
+        case '@': if (stdout_set(cmd + 1) != 0) return ERROR; break;
+        case '#': if (stderr_set(cmd + 1) != 0) return ERROR; break;
+        default: return ACTIONS_PENDING;
       }
 
-    return ACTIONS_PENDING;
+    ++(*argsptr);
+    return redirect_fds(argsptr);
   }
 
 static void
