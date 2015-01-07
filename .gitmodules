@@ -1,0 +1,3 @@
+[submodule "libprompt"]
+	path = libprompt
+	url = https://github.com/lollek/libprompt.git

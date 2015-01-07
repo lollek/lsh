@@ -1,6 +1,5 @@
 #include <stdlib.h>
-#include <readline/readline.h>
-#include <readline/history.h>
+#include "../libprompt/src/prompt.h"
 
 #include "signal.h"
 #include "command.h"
@@ -20,7 +19,7 @@ main(void)
     /* Loop */
     while (status == 0)
       {
-        char *line = readline(". ");
+        char *line = prompt(". ");
         status = eval(line);
         free(line);
       }
