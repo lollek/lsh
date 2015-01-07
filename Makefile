@@ -1,4 +1,4 @@
-CFLAGS=-Wall -Wextra -Werror -pedantic -O3 -g
+CFLAGS=-Wall -Wextra -Werror -pedantic -O3
 LDFLAGS=
 
 LINT=cppcheck
@@ -12,6 +12,9 @@ LIBOBJS=$(wildcard libprompt/src/*.o)
 
 lsh:	$(OBJFILES) libs
 	$(CC) $(LDFLAGS) -o $@ $(OBJFILES) $(LIBOBJS)
+
+debug:	CFLAGS+= -g
+debug: lsh
 
 libs:
 	make -C libprompt
