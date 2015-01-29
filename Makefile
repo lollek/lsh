@@ -3,7 +3,11 @@
 PREFIX=/usr/local
 
 PROGNAME=lsh
+VERSION=0.0.1
+
 CFLAGS=-Wall -Wextra -Werror -pedantic -O3
+CFLAGS+= -DPROGNAME=\"$(PROGNAME)\"
+CFLAGS+= -DVERSION=\"$(VERSION)\"
 LDFLAGS=
 
 LINT=cppcheck

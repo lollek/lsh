@@ -7,7 +7,7 @@ void
 help(const char *cmd)
   {
     if (cmd == NULL)
-        printf("Builtin commands:\n"
+        printf("Builtin commands for " PROGNAME " version " VERSION ":\n"
                "\tcd [path]"
                "\texit"
                "\thelp"
