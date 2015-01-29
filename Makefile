@@ -19,7 +19,7 @@ OBJFILES=$(addsuffix .o,$(basename $(SRCFILES)))
 
 LIBOBJS=$(wildcard libprompt/src/*.o)
 
-lsh:	$(OBJFILES) libs
+$(PROGNAME): $(OBJFILES) libs
 	$(CC) $(LDFLAGS) -o $@ $(OBJFILES) $(LIBOBJS)
 
 install: $(PROGNAME)
@@ -28,7 +28,7 @@ install: $(PROGNAME)
 .PHONY: install
 
 debug:	CFLAGS+= -g
-debug: lsh
+debug: $(PROGNAME)
 
 libs:
 	make -C libprompt
@@ -40,5 +40,5 @@ lint:
 
 clean:
 	make clean -C libprompt
-	$(RM) lsh $(OBJFILES)
+	$(RM) $(PROGNAME) $(OBJFILES)
 .PHONY: clean
