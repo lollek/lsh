@@ -18,12 +18,13 @@ debug: lsh
 
 libs:
 	make -C libprompt
+.PHONY: libs
 
 lint:
 	$(LINT) $(LINTFLAGS) $(SRCFILES) $(HEADERS)
+.PHONY: lint
 
 clean:
 	make clean -C libprompt
 	$(RM) lsh $(OBJFILES)
-
-.PHONY:	clean lint libs
+.PHONY: clean
