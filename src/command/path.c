@@ -70,7 +70,7 @@ command_path_exit(void)
 static int
 command_path_show(void)
   {
-    char **pathv = splits(g_path, ':');
+    char **pathv = splits(g_path, ":");
     int i;
     for (i = 0; pathv[i] != NULL; ++i)
         printf("%d: %s\n", i, pathv[i]);
@@ -96,7 +96,7 @@ command_path_find(const char *path)
         return NULL;
       }
 
-    pathv = splits(g_path, ':');
+    pathv = splits(g_path, ":");
     pathlen = strlen(path);
     for (i = 0; pathv[i] != NULL; ++i)
       {

@@ -32,7 +32,7 @@ redirect_fds(char ***argsptr)
 
     switch(cmd[0])
       {
-        case '$': if  (stdin_set(cmd + 1) != 0) return ERROR; break;
+        case '!': if  (stdin_set(cmd + 1) != 0) return ERROR; break;
         case '@': if (stdout_set(cmd + 1) != 0) return ERROR; break;
         case '#': if (stderr_set(cmd + 1) != 0) return ERROR; break;
         default: return ACTIONS_PENDING;
@@ -96,7 +96,7 @@ eval(const char *cmd)
     if (cmd[0] == '\0')
         return 0;
 
-    orig_args = args = splits(cmd, ' ');
+    orig_args = args = splits(cmd, " $");
     if (args == NULL)
       {
         fprintf(stderr, "Virtual memory exhausted\n");

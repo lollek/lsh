@@ -4,31 +4,24 @@
 #include "string.h"
 
 char **
-splits(const char *cmd, int delim)
+splits(const char *cmd, const char *delim)
   {
+    const size_t delimlen = strlen(delim);
     char **retarray;
     int i;
     const char *cptr;
-    int nsplits = 0;
+    int nsplits = 1;
 
     if (cmd == NULL)
         return NULL;
 
     /* lstrip() */
-    while (*cmd == delim)
-        cmd++;
+    while (!strncmp(cmd, delim, delimlen))
+        cmd += delimlen;
 
     /* Count nsplits */
-    cptr = cmd;
-    while (*cptr != '\0')
-      {
+    for (cptr = strstr(cmd, delim); cptr != NULL; cptr = strstr(cptr + delimlen, delim))
         ++nsplits;
-        cptr = strchr(cptr, delim);
-        if (cptr == NULL)
-            break;
-        while (*cptr == delim)
-            cptr++;
-      }
 
     /* Allocate retarray */
     retarray = malloc(sizeof *retarray * (nsplits + 1));
@@ -39,7 +32,7 @@ splits(const char *cmd, int delim)
     cptr = cmd;
     for (i = 0; i < nsplits; ++i)
       {
-        char *newcptr = strchr(cptr, delim);
+        char *newcptr = strstr(cptr, delim);
         size_t ptrdiff;
         if (newcptr == NULL)
             ptrdiff = strlen(cptr);
@@ -57,13 +50,9 @@ splits(const char *cmd, int delim)
 
         strncpy(retarray[i], cptr, ptrdiff);
         retarray[i][ptrdiff] = '\0';
-        cptr = newcptr;
-        if (cptr == NULL)
+        if (newcptr == NULL)
             break;
-        while (*cptr == delim)
-            cptr++;
-        if (cptr == NULL)
-            break;
+        cptr = newcptr + delimlen;
       }
     retarray[nsplits] = NULL;
 
