@@ -27,8 +27,11 @@ install: $(PROGNAME)
 	chmod 0755 $(PREFIX)/bin/$(PROGNAME)
 .PHONY: install
 
-debug:	CFLAGS+= -g
+debug: CFLAGS+= -g -fsanitize=address -fno-omit-frame-pointer
+debug: LDFLAGS+= -fsanitize=address
 debug: $(PROGNAME)
+	./$(PROGNAME)
+.PHONY: debug
 
 libs:
 	make -C libprompt
