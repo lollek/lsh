@@ -8,8 +8,9 @@
 #include "io.h"
 
 #include "command.h"
-#include "command/help.h"
+#include "command/alias.h"
 #include "command/cd.h"
+#include "command/help.h"
 #include "command/path.h"
 
 typedef enum status_t
@@ -53,16 +54,13 @@ restore_fds(void)
 static status_t
 builtin(char **argv)
   {
-    if (!strcmp(argv[0], "cd"))
-        command_cd(argv);
-    else if (!strcmp(argv[0], "help"))
-        help(argv[1]);
-    else if (!strcmp(argv[0], "exit"))
-        return ACTION_EXIT;
-    else if (!strcmp(argv[0], "path"))
-        command_path(argv);
-    else
-        return ACTIONS_PENDING;
+    if      (!strcmp(argv[0], "alias"))   command_alias_add(argv);
+    else if (!strcmp(argv[0], "cd"))      command_cd(argv);
+    else if (!strcmp(argv[0], "exit"))    return ACTION_EXIT;
+    else if (!strcmp(argv[0], "help"))    help(argv[1]);
+    else if (!strcmp(argv[0], "path"))    command_path(argv);
+    else if (!strcmp(argv[0], "unalias")) command_alias_remove(argv);
+    else                                  return ACTIONS_PENDING;
     return NO_MORE_ACTIONS;
   }
 
@@ -86,22 +84,26 @@ external(char **argv)
   }
 
 int
-eval(const char *cmd)
+eval(char *origcmd)
   {
     status_t status = ACTIONS_PENDING;
     char **args, **orig_args;
+    char *cmd;
 
-    if (cmd == NULL)
+    if (origcmd == NULL)
         return 2;
-    if (cmd[0] == '\0')
+    if (origcmd[0] == '\0')
         return 0;
 
+    cmd = command_alias_replace(origcmd, " $");
     orig_args = args = splits(cmd, " $");
     if (args == NULL)
       {
         fprintf(stderr, "Virtual memory exhausted\n");
         return 1;
       }
+    if (cmd != origcmd)
+        free(cmd);
 
     /* Step 1, redirect fds */
     if (status == ACTIONS_PENDING)

@@ -14,6 +14,6 @@
  * Evaluate (and execute) a command and return
  */
 int
-eval(const char *cmd);
+eval(char *cmd);
 
 #endif /* LSH_COMMAND_H */
