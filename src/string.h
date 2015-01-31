@@ -2,6 +2,23 @@
 #define LSH_STRING_H
 
 /**
+ * joins - Reverses the effect of splits
+ * @cmds	Array of split strings
+ * @delim	Delimiter to join the strings with
+ *
+ * Returns:
+ *  strings	On success
+ *  NULL	If malloc fails
+ *
+ * Description:
+ * Reverses the effect of splits
+ *
+ * When done, you should need to free the returned string
+ */
+char *
+joins(char * const *cmd, const char *delim);
+
+/**
  * splits - Split a sentence into separate words.
  * @cmd		String to split
  * @delim	Delimiter to split on

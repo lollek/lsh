@@ -1,7 +1,34 @@
 #include <stdlib.h>
 #include <string.h>
+#include <stdio.h>
 
 #include "string.h"
+
+char *
+joins(char * const *cmds, const char *delim)
+  {
+    char *retval;
+    char *retvalptr;
+    size_t retvallen = 1;
+    size_t delimlen = strlen(delim);
+    int i;
+
+    if (cmds[0] == NULL)
+        return NULL;
+
+    retvallen += strlen(cmds[0]);
+    for (i = 1; cmds[i] != NULL; ++i)
+        retvallen += delimlen + strlen(cmds[i]);
+
+    retvalptr = retval = malloc(retvallen);
+    if (retval == NULL)
+        return NULL;
+
+    retvalptr += sprintf(retvalptr, "%s", cmds[0]);
+    for (i = 1; cmds[i] != NULL; ++i)
+        retvalptr += sprintf(retvalptr, "%s%s", delim, cmds[i]);
+    return retval;
+  }
 
 char **
 splits(const char *cmd, const char *delim)
