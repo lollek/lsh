@@ -20,6 +20,22 @@ It is possible that this will change in later versions.
 Hello world!
 ```
 
+### Aliases
+You can add and remove aliases with the `alias` and `unalias` commands  
+```
+. ls
+libprompt  lsh  Makefile  README.md  src
+. alias $ls $ls $-a
+. ls
+.  ..  .git  .gitignore  .gitmodules  libprompt  lsh  Makefile  README.md  src
+. alias
+        ls: 'ls $-a
+. unalias $ls
+. alias
+. ls
+libprompt  lsh  Makefile  README.md  src
+```
+
 If you redirect two streams in one command you will need to put a space between them.
 ```
 @/dev/null $#@ $command-without-stdout-and-stderr
