@@ -3,7 +3,7 @@
 PREFIX=/usr/local
 
 PROGNAME=lsh
-VERSION=0.0.2
+VERSION=0.0.3
 
 CFLAGS=-Wall -Wextra -Werror -pedantic -O3
 CFLAGS+= -DPROGNAME=\"$(PROGNAME)\"
