@@ -59,7 +59,7 @@ builtin(char **argv)
     else if (!strcmp(argv[0], "exit"))    return ACTION_EXIT;
     else if (!strcmp(argv[0], "help"))    help(argv[1]);
     else if (!strcmp(argv[0], "path"))    command_path(argv);
-    else if (!strcmp(argv[0], "unalias")) command_unalias(argv);
+    else if (!strcmp(argv[0], "unalias")) command_unalias(argv, true);
     else                                  return ACTIONS_PENDING;
     return NO_MORE_ACTIONS;
   }

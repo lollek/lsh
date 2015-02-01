@@ -44,6 +44,12 @@ command_alias_add(char *alias, char * const *command)
     if (tmptail == NULL)
         return 1;
 
+    { /* Unalias any previous command */
+      char *unalias_list[] = { NULL, NULL, NULL };
+      unalias_list[1] = alias;
+      command_unalias(unalias_list, false);
+    }
+
     tmptail->alias = malloc(strlen(alias) +1);
     tmptail->command = joins(command, " $");
     tmptail->next = NULL;
@@ -78,7 +84,7 @@ command_alias(char * const *argv)
  }
 
 int
-command_unalias(char * const *argv)
+command_unalias(char * const *argv, bool verbose)
   {
     alias_list_t *j = NULL;
     alias_list_t *i;
@@ -99,7 +105,7 @@ command_unalias(char * const *argv)
                 alias_removed = true;
                 break;
               }
-        if (!alias_removed)
+        if (verbose && !alias_removed)
             fprintf(stderr, "unalias: %s: No such alias\n", *argv);
       }
 

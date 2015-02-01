@@ -1,6 +1,8 @@
 #ifndef LSH_COMMAND_ALIAS_H
 #define LSH_COMMAND_ALIAS_H
 
+#include <stdbool.h>
+
 /**
  * command_alias - add or list alias(es)
  * @argv	like argv for a main() function
@@ -17,13 +19,14 @@ command_alias(char * const *argv);
 /**
  * command_unalias - remove alias(es)
  * @argv	like argv for a main() function
+ * @verbose	should it print error on no match?
  *
  * Description;
  * Removes any alias set for argv[1] and forward
  * Returns 0 on success
  */
 int
-command_unalias(char * const *argv);
+command_unalias(char * const *argv, bool verbose);
 
 /**
  * command_alias_replace - replace alias with its command
