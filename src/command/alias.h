@@ -15,7 +15,7 @@ int
 command_alias(char * const *argv);
 
 /**
- * command_alias_remove - remove alias(es)
+ * command_unalias - remove alias(es)
  * @argv	like argv for a main() function
  *
  * Description;
@@ -23,7 +23,7 @@ command_alias(char * const *argv);
  * Returns 0 on success
  */
 int
-command_alias_remove(char * const *argv);
+command_unalias(char * const *argv);
 
 /**
  * command_alias_replace - replace alias with its command

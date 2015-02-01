@@ -78,7 +78,7 @@ command_alias(char * const *argv)
  }
 
 int
-command_alias_remove(char * const *argv)
+command_unalias(char * const *argv)
   {
     alias_list_t *j = NULL;
     alias_list_t *i;
@@ -100,7 +100,7 @@ command_alias_remove(char * const *argv)
                 break;
               }
         if (!alias_removed)
-            fprintf(stderr, "alias: %s: No such alias\n", *argv);
+            fprintf(stderr, "unalias: %s: No such alias\n", *argv);
       }
 
     return 1;
