@@ -23,7 +23,7 @@ command_alias_show_all(void)
   {
     alias_list_t *i;
     for (i = root; i != NULL; i = i->next)
-        printf("\t%s: '%s\n", i->alias, i->command);
+        printf("\t%s: '%s'\n", i->alias, i->command);
     return 0;
   }
 
