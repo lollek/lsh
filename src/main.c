@@ -8,19 +8,35 @@
 #include "command.h"
 #include "command/path.h"
 
-int
-argparse(char arg[])
+static int
+argparse(char *argv[])
   {
-    if (!strcmp(arg, "--version"))
+    char *arg = argv[0];
+    char **next = &argv[1];
+
+    if (arg[0] != '-')
+        exit(exec_file(arg));
+    else if (!strcmp(arg, "--version"))
+      {
         puts(PROGNAME " version " VERSION);
+        exit(0);
+      }
+
     else if (!strcmp(arg, "--help"))
-        printf("Usage: " PROGNAME " [options]\n"
+      {
+        printf("Usage: " PROGNAME " [options] [FILE]\n"
               " --help             Print this help and exit\n"
               " --version          Print version and exit\n"
               );
+        exit(0);
+      }
     else
-        return !!fprintf(stderr, PROGNAME ": Unknown argument: '%s'\n", arg);
-    return 0;
+      {
+        fprintf(stderr, PROGNAME ": Unknown argument: '%s'\n", arg);
+        exit(1);
+      }
+
+    return *next ? argparse(next) : 0;
   }
 
 int
@@ -28,14 +44,12 @@ main(int argc, char *argv[])
   {
     int status = 0;
 
-    if (--argc)
-        return argparse(argv[argc]);
-
     /* Init */
     init_signals();
-
-    /* Load config */
     command_path_init(NULL);
+
+    if (argc > 1)
+      argparse(&argv[1]);
 
     /* Loop */
     while (status == 0)

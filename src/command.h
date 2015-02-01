@@ -16,4 +16,18 @@
 int
 eval(char *cmd);
 
+/**
+ * exec_file - execute a file
+ * @file	File to parse
+ *
+ * Returns:
+ *  0		Success
+ *  1		Error
+ *
+ * Description:
+ * Parse and execute a file instead of standard input
+ */
+int
+exec_file(char *file);
+
 #endif /* LSH_COMMAND_H */

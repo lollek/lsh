@@ -122,3 +122,30 @@ eval(char *origcmd)
 
     return status == ACTION_EXIT ? 2 : 0;
   }
+
+int
+exec_file(char *filename)
+  {
+    FILE *file = fopen(filename, "r");
+    char *line = NULL;
+    size_t len = 0;
+
+    if (file == NULL)
+      {
+        perror(filename);
+        return 1;
+      }
+
+    while (getline(&line, &len, file) != -1)
+    {
+      char *newline = strrchr(line, '\n');
+      if (newline != NULL)
+          *newline = '\0';
+      if (eval(line) != 0)
+          break;
+    }
+
+    free(line);
+    fclose(file);
+    return 0;
+  }
