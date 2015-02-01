@@ -115,7 +115,7 @@ command_alias_replace(char *cmd, const char *delim)
     size_t argv0len = cmdend == NULL ? cmdlen : (size_t)(cmdend - cmd);
 
     for (i = root; i != NULL; i = i->next)
-        if (!strncmp(cmd, i->alias, argv0len))
+        if (!strcmp(cmd, i->alias))
             {
               size_t commandlen = strlen(i->command);
               char *retval = malloc(cmdlen - argv0len + commandlen +1);
