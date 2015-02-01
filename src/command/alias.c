@@ -18,64 +18,64 @@ alias_list_t;
 static alias_list_t *root = NULL;
 static alias_list_t *tail = NULL;
 
-int
-command_alias_add(char * const *argv)
+static int
+command_alias_show_all(void)
   {
-    alias_list_t *tmptail;
+    alias_list_t *i;
+    for (i = root; i != NULL; i = i->next)
+        printf("\t%s: '%s\n", i->alias, i->command);
+    return 0;
+  }
 
-    if (argv[1] == NULL)
-      {
-        alias_list_t *i;
-        for (i = root; i != NULL; i = i->next)
-            printf("\t%s: '%s\n", i->alias, i->command);
-        return 0;
-      }
+static int
+command_alias_show(char *alias)
+  {
+    alias_list_t *i;
+    for (i = root; i != NULL; i = i->next)
+        if (!strcmp(alias, i->alias))
+            return !printf("alias: %s: '%s'\n", alias, i->command);
+    return !!fprintf(stdout, "alias: %s: No such alias\n", alias);
+  }
 
-    if (argv[2] == NULL)
-      {
-        alias_list_t *i;
-        for (i = root; i != NULL; i = i->next)
-            if (!strcmp(argv[1], i->alias))
-                return !printf("alias: %s: '%s'\n", argv[1], i->command);
-        return !!fprintf(stdout, "alias: %s: No such alias\n", argv[1]);
-      }
+static int
+command_alias_add(char *alias, char * const *command)
+  {
+    alias_list_t *tmptail = malloc(sizeof *tmptail);
+    if (tmptail == NULL)
+        return 1;
 
-    if (root == NULL)
-      {
-        root = malloc(sizeof *root);
-        if (root == NULL)
-            return 1;
-        tmptail = root;
-      }
-    else
-      {
-        tail->next = malloc(sizeof *tail);
-        if (tail->next == NULL)
-            return 1;
-        tmptail = tail->next;
-      }
-
-    tmptail->alias = malloc(strlen(argv[1]) +1);
-    tmptail->command = joins(&argv[2], " $");
+    tmptail->alias = malloc(strlen(alias) +1);
+    tmptail->command = joins(command, " $");
+    tmptail->next = NULL;
 
     if (tmptail->alias == NULL || tmptail->command == NULL)
       {
         free(tmptail->alias);
         free(tmptail->command);
         free(tmptail);
-        if (tmptail == root)
-            root = NULL;
-        else
-            tail->next = NULL;
         return 1;
       }
 
-    strcpy(tmptail->alias, argv[1]);
-    tmptail->next = NULL;
+    strcpy(tmptail->alias, alias);
+    if (root == NULL)
+        root = tmptail;
+    else
+        tail->next = tmptail;
     tail = tmptail;
-
     return 0;
   }
+
+int
+command_alias(char * const *argv)
+  {
+
+    if (argv[1] == NULL)
+        return command_alias_show_all();
+    else if (argv[2] == NULL)
+        return command_alias_show(argv[1]);
+    else
+        return command_alias_add(argv[1], &argv[2]);
+ }
 
 int
 command_alias_remove(char * const *argv)

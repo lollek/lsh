@@ -2,17 +2,17 @@
 #define LSH_COMMAND_ALIAS_H
 
 /**
- * command_alias_add - add alias
+ * command_alias - add or list alias(es)
  * @argv	like argv for a main() function
  *
  * Description;
- * Sets an alias for argv[1] to be replaced with argv[2]
- * If argv[2] is NULL, the alias for arg[1] is displayed
  * If argv[1] is NULL, all aliases are displayed
+ * If argv[2] is NULL, the alias for arg[1] is displayed
+ * Otherwise, it sets an alias for argv[1] to be replaced with argv[2+]
  * Returns 0 on success
  */
 int
-command_alias_add(char * const *argv);
+command_alias(char * const *argv);
 
 /**
  * command_alias_remove - remove alias(es)

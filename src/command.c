@@ -54,7 +54,7 @@ restore_fds(void)
 static status_t
 builtin(char **argv)
   {
-    if      (!strcmp(argv[0], "alias"))   command_alias_add(argv);
+    if      (!strcmp(argv[0], "alias"))   command_alias(argv);
     else if (!strcmp(argv[0], "cd"))      command_cd(argv);
     else if (!strcmp(argv[0], "exit"))    return ACTION_EXIT;
     else if (!strcmp(argv[0], "help"))    help(argv[1]);
