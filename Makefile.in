@@ -1,13 +1,8 @@
-## Configurables:
-# Prefix where to place library and header.
-PREFIX=/usr/local
-
-PROGNAME=lsh
-VERSION=0.0.3
+CC=@CC@
 
 CFLAGS=-Wall -Wextra -Werror -pedantic -O3
-CFLAGS+= -DPROGNAME=\"$(PROGNAME)\"
-CFLAGS+= -DVERSION=\"$(VERSION)\"
+CFLAGS+= -DPROGNAME=\"@PACKAGE_NAME@\"
+CFLAGS+= -DVERSION=\"@PACKAGE_VERSION@\"
 LDFLAGS=
 
 LINT=cppcheck
@@ -19,18 +14,21 @@ OBJFILES=$(addsuffix .o,$(basename $(SRCFILES)))
 
 LIBOBJS=$(wildcard libprompt/src/*.o)
 
-$(PROGNAME): $(OBJFILES) libs
+@PACKAGE_NAME@: $(OBJFILES) libs
 	$(CC) $(LDFLAGS) -o $@ $(OBJFILES) $(LIBOBJS)
 
-install: $(PROGNAME)
-	cp $(PROGNAME) $(PREFIX)/bin/$(PROGNAME)
-	chmod 0755 $(PREFIX)/bin/$(PROGNAME)
+install: @PACKAGE_NAME@
+	cp "@PACKAGE_NAME@" "@prefix@/bin/@PACKAGE_NAME@"
+	chmod 0755 "@prefix@/bin/@PACKAGE_NAME@"
 .PHONY: install
+
+uninstall:
+	$(RM) "@prefix@/bin/@PACKAGE_NAME@"
+.PHONY: uninstall
 
 debug: CFLAGS+= -g -fsanitize=address -fno-omit-frame-pointer
 debug: LDFLAGS+= -fsanitize=address
-debug: $(PROGNAME)
-	./$(PROGNAME)
+debug: @PACKAGE_NAME@
 .PHONY: debug
 
 libs:
@@ -43,5 +41,11 @@ lint:
 
 clean:
 	make clean -C libprompt
-	$(RM) $(PROGNAME) $(OBJFILES)
+	$(RM) @PACKAGE_NAME@ $(OBJFILES)
 .PHONY: clean
+
+distclean: clean
+	rm -rf autom4te.cache
+	$(RM) Makefile config.log config.status configure
+.PHONY: distclean
+

@@ -1,0 +1,8 @@
+AC_INIT(lsh, 0.04)
+AC_PROG_CC
+
+AC_CHECK_HEADER(prompt.h)
+
+AC_OUTPUT(Makefile)
+
+AC_LANG(C)
