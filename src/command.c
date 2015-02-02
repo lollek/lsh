@@ -84,25 +84,25 @@ external(char **argv)
   }
 
 int
-eval(char *origcmd)
+eval(char *orig_cmd)
   {
     status_t status = ACTIONS_PENDING;
     char **args, **orig_args;
     char *cmd;
 
-    if (origcmd == NULL)
+    if (orig_cmd == NULL)
         return 2;
-    if (origcmd[0] == '\0')
+    if (orig_cmd[0] == '\0')
         return 0;
 
-    cmd = command_alias_replace(origcmd, " $");
+    cmd = command_alias_replace(orig_cmd, " $");
     orig_args = args = splits(cmd, " $");
     if (args == NULL)
       {
         fprintf(stderr, "Virtual memory exhausted\n");
         return 1;
       }
-    if (cmd != origcmd)
+    if (cmd != orig_cmd)
         free(cmd);
 
     /* Step 1, redirect fds */
