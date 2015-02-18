@@ -2,7 +2,7 @@
 #include <stdio.h>
 #include <string.h>
 
-#include "../libprompt/src/prompt.h"
+#include <prompt.h>
 
 #include "argparse.h"
 #include "signal.h"
