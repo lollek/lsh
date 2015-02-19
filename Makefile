@@ -21,7 +21,7 @@ build/cmake-done:
 
 .PHONY: clean
 clean:
-	rm -rf build
+	rm -rf build lsh
 
 %:
 	make -sC build $@
