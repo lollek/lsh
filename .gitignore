@@ -31,10 +31,3 @@ lsh
 *.i*86
 *.x86_64
 *.hex
-
-# Autoconf
-autom4te.cache
-Makefile
-config.log
-config.status
-configure
