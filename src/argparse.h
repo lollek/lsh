@@ -4,6 +4,7 @@
 /**
  * argparse - Parse startup arguments
  * @argv	Null-terminated list of arguments to parse
+ * @argc	Number of arguments in argv
  *
  * Returns:
  * -1		Success, continue with application
@@ -14,6 +15,6 @@
  * If argv is NULL, or does not end with a NULL, this function will segfault
  */
 int
-argparse(char *argv[]);
+argparse(char *argv[], int argc);
 
 #endif /* LSH_ARGPARSE_H */

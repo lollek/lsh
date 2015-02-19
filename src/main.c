@@ -20,7 +20,7 @@ main(int argc, char *argv[])
     command_path_init(NULL);
 
     /* Parse arguments */
-    status = argparse(&argv[1]);
+    status = argparse(&argv[1], argc -1);
     if (status != -1)
         return status;
 

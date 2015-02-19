@@ -28,6 +28,6 @@ eval(char *cmd);
  * Parse and execute a file instead of standard input
  */
 int
-exec_file(char *file);
+exec_file(const char *file);
 
 #endif /* LSH_COMMAND_H */

@@ -124,7 +124,7 @@ eval(char *orig_cmd)
   }
 
 int
-exec_file(char *filename)
+exec_file(const char *filename)
   {
     FILE *file = fopen(filename, "r");
     char *line = NULL;
