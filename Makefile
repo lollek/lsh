@@ -24,4 +24,6 @@ clean:
 	rm -rf build lsh
 
 %:
+ifneq ($(findstring all,$@),)
 	make -sC build $@
+endif
